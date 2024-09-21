@@ -49,16 +49,39 @@ export function LeagueCards() {
         >
           {championCards.map((card, index) => (
             <ReactParallaxTilt key={index}>
-              <div className='card' style={{ textAlign: 'center' }}>
-                <h3 style={{margin:'6px'}}>{card.name}</h3>
+              <div
+                className="card"
+                style={{
+                  position: 'relative', // Added relative positioning
+                  textAlign: 'center',
+                }}
+              >
+                {/* Image */}
                 <img
                   src={card.imageUrl}
                   alt={`${card.name} card`}
                   style={{
-                    width: '80%', // Adjust width to make images smaller
-                    maxHeight: '380px', // Limit height to avoid excessive gaps
+                    width: '80%',
+                    maxHeight: '380px',
                   }}
                 />
+  
+                {/* Title */}
+                <h3
+                  style={{
+                    position: 'absolute',
+                    bottom: '10px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    margin: '0',
+                    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                    color: 'white',
+                    padding: '5px',
+                    borderRadius: '8px',
+                  }}
+                >
+                  {card.name}
+                </h3>
               </div>
             </ReactParallaxTilt>
           ))}
@@ -68,6 +91,7 @@ export function LeagueCards() {
       )}
     </>
   );
+  
   
 }
 

@@ -4,9 +4,9 @@ import { LeagueCards } from "./components/LeagueCards";
 
 function App() {
   return (
-    <>
+    <div>
       <LeagueCards />
-    </>
+    </div>
   );
 }
 
