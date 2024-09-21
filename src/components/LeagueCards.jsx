@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { leagueChampions } from "../data/Champions";
+import ReactParallaxTilt from "react-parallax-tilt";
 
 const BASE_URL =
   "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/";
@@ -37,29 +38,40 @@ export function LeagueCards() {
 
   return (
     <>
-      {championCards.length > 0 ? (
-        <div>
-          {championCards.map((card, index) => (
-            <div key={index} style={{display:'flex', flexWrap:'wrap'}}>
-              <h3>{card.name}</h3>
-              <img src={card.imageUrl} alt={`${card.name} card`} />
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p>Loading images...</p>
-      )}
-    </>
+    {championCards.length > 0 ? (
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 1fr)',
+          gap: '10px',
+        }}
+      >
+        {championCards.map((card, index) => (
+          <ReactParallaxTilt key={index}>
+          <div  style={{ textAlign: 'center'}}>
+            <h3>{card.name}</h3>
+            <img
+              src={card.imageUrl}
+              alt={`${card.name} card`}
+            />
+          </div>
+          </ReactParallaxTilt>
+        ))}
+      </div>
+    ) : (
+      <p>Loading images...</p>
+    )}
+  </>
   );
 }
 
 function generateTenChampionNames() {
   const listOfChampionNames = Object.values(leagueChampions.data).map(
-    (champion) => champion.image.full.slice(0,-4)
+    (champion) => champion.image.full.slice(0, -4)
   );
 
   const randomIndices = new Set();
-  while (randomIndices.size < 10) {
+  while (randomIndices.size < 8) {
     const randomIndex = Math.floor(Math.random() * listOfChampionNames.length);
     randomIndices.add(randomIndex);
   }
