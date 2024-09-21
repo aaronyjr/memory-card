@@ -8,6 +8,7 @@ const BASE_URL =
 
 export function LeagueCards() {
   const [championCards, setChampionCards] = useState([]);
+  const [selectedCards, setSelectedCards] = useState(new Set());
 
   useEffect(() => {
     const listOfChampionNames = generateTenChampionNames();
@@ -26,7 +27,6 @@ export function LeagueCards() {
           return { name, imageUrl: url };
         })
       );
-
       setChampionCards(cards);
     };
 
@@ -50,7 +50,7 @@ export function LeagueCards() {
           {championCards.map((card, index) => (
             <ReactParallaxTilt key={index}>
               <div
-                onClick={() => console.log("Clicked")}
+                onClick={() => checkWin(card.name, selectedCards, setSelectedCards)}
                 className="card"
                 style={{
                   position: "relative",
@@ -91,6 +91,21 @@ export function LeagueCards() {
     </>
   );
 }
+
+function checkWin(selectedChampion, selectedCards, setSelectedCards) {
+  if (selectedCards.has(selectedChampion)) {
+    console.log('You lose');
+  } else {
+    console.log('Win');
+
+    setSelectedCards(prevState => {
+      const newSet = new Set(prevState);
+      newSet.add(selectedChampion);
+      return newSet;
+    });
+  }
+}
+
 
 function generateTenChampionNames() {
   const listOfChampionNames = Object.values(leagueChampions.data).map(
