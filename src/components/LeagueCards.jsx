@@ -38,31 +38,38 @@ export function LeagueCards() {
 
   return (
     <>
-    {championCards.length > 0 ? (
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: '10px',
-        }}
-      >
-        {championCards.map((card, index) => (
-          <ReactParallaxTilt key={index}>
-          <div  style={{ textAlign: 'center'}}>
-            <h3>{card.name}</h3>
-            <img
-              src={card.imageUrl}
-              alt={`${card.name} card`}
-            />
-          </div>
-          </ReactParallaxTilt>
-        ))}
-      </div>
-    ) : (
-      <p>Loading images...</p>
-    )}
-  </>
+      {championCards.length > 0 ? (
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: '10px',
+          }}
+        >
+          {championCards.map((card, index) => (
+            <ReactParallaxTilt key={index}>
+              <div style={{ textAlign: 'center' }}>
+                <h3 style={{margin:'6px'}}>{card.name}</h3>
+                <img
+                  src={card.imageUrl}
+                  alt={`${card.name} card`}
+                  style={{
+                    width: '80%', // Adjust width to make images smaller
+                    height: 'auto', // Maintain aspect ratio
+                    maxHeight: '380px', // Limit height to avoid excessive gaps
+                    objectFit: 'contain', // Ensure image fits well in its container
+                  }}
+                />
+              </div>
+            </ReactParallaxTilt>
+          ))}
+        </div>
+      ) : (
+        <p>Loading images...</p>
+      )}
+    </>
   );
+  
 }
 
 function generateTenChampionNames() {
