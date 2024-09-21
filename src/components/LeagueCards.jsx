@@ -40,7 +40,7 @@ export function LeagueCards() {
       {championCards.length > 0 ? (
         <div>
           {championCards.map((card, index) => (
-            <div key={index}>
+            <div key={index} style={{display:'flex', flexWrap:'wrap'}}>
               <h3>{card.name}</h3>
               <img src={card.imageUrl} alt={`${card.name} card`} />
             </div>
@@ -55,7 +55,7 @@ export function LeagueCards() {
 
 function generateTenChampionNames() {
   const listOfChampionNames = Object.values(leagueChampions.data).map(
-    (champion) => champion.name
+    (champion) => champion.image.full.slice(0,-4)
   );
 
   const randomIndices = new Set();
