@@ -1,4 +1,14 @@
 .card {
     padding: 0px;
-    caret-color: transparent;
 }
+
+.card-image {
+    box-sizing: border-box;
+}
+
+.card-image:hover {
+    border: 4px groove #ADD8E6; /* Light blue border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Light shadow for a subtle effect */
+  }
+  
+  

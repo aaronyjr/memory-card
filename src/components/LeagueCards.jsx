@@ -9,8 +9,10 @@ const BASE_URL =
 export function LeagueCards() {
   const [championCards, setChampionCards] = useState([]);
   const [selectedCards, setSelectedCards] = useState(new Set());
+  const [restartGame, setRestartGame] = useState(false)
 
   useEffect(() => {
+    setRestartGame(false);
     const listOfChampionNames = generateTenChampionNames();
     console.log(listOfChampionNames);
 
@@ -35,7 +37,7 @@ export function LeagueCards() {
     return () => {
       championCards.forEach((card) => URL.revokeObjectURL(card.imageUrl));
     };
-  }, []);
+  }, [restartGame]);
 
   return (
     <>
@@ -56,7 +58,8 @@ export function LeagueCards() {
                     setChampionCards,
                     card.name,
                     selectedCards,
-                    setSelectedCards
+                    setSelectedCards,
+                    setRestartGame
                   )
                 }
                 className="card"
@@ -65,7 +68,7 @@ export function LeagueCards() {
                   textAlign: "center",
                 }}
               >
-                <img
+                <img className="card-image"
                   src={card.imageUrl}
                   alt={`${card.name} card`}
                   style={{
@@ -105,11 +108,13 @@ function checkWin(
   setChampionCards,
   selectedChampion,
   selectedCards,
-  setSelectedCards
+  setSelectedCards,
+  setRestartGame
 ) {
   console.log(selectedChampion);
   if (selectedCards.has(selectedChampion)) {
     console.log("You lose");
+    setRestartGame(true);
   } else {
     console.log("Win");
 
@@ -118,7 +123,7 @@ function checkWin(
       newSet.add(selectedChampion);
       return newSet;
     });
-    
+
     shuffleCards(championCards, setChampionCards)
   }
 }
@@ -146,13 +151,10 @@ function shuffleCards(championCards, setChampionCards) {
   let arr = championCards;
   let currentIndex = arr.length;
 
-  // While there remain elements to shuffle...
   while (currentIndex != 0) {
-    // Pick a remaining element...
     let randomIndex = Math.floor(Math.random() * currentIndex);
     currentIndex--;
 
-    // And swap it with the current element.
     [arr[currentIndex], arr[randomIndex]] = [
       arr[randomIndex],
       arr[currentIndex],
