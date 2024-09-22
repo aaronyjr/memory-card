@@ -21,7 +21,12 @@ function App() {
         <p>Score: {score}</p>
         <p>High score: {highScore}</p>
       </div>
-      <LeagueCards />
+      <LeagueCards
+        score={score}
+        setScore={setScore}
+        highScore={highScore}
+        setHighScore={setHighScore}
+      />
     </div>
   );
 }

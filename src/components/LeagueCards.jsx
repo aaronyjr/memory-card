@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useEffect, useState } from "react";
 import { leagueChampions } from "../data/Champions";
 import ReactParallaxTilt from "react-parallax-tilt";
@@ -6,10 +7,10 @@ import "../styles/CardStyle.css";
 const BASE_URL =
   "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/";
 
-export function LeagueCards() {
+export function LeagueCards({score, setScore, highScore, setHighScore}) {
   const [championCards, setChampionCards] = useState([]);
   const [selectedCards, setSelectedCards] = useState(new Set());
-  const [restartGame, setRestartGame] = useState(false)
+  const [restartGame, setRestartGame] = useState(false);
 
   useEffect(() => {
     setRestartGame(false);
@@ -59,7 +60,11 @@ export function LeagueCards() {
                     card.name,
                     selectedCards,
                     setSelectedCards,
-                    setRestartGame
+                    setRestartGame,
+                    score,
+                    setScore,
+                    highScore,
+                    setHighScore
                   )
                 }
                 className="card"
@@ -68,7 +73,8 @@ export function LeagueCards() {
                   textAlign: "center",
                 }}
               >
-                <img className="card-image"
+                <img
+                  className="card-image"
                   src={card.imageUrl}
                   alt={`${card.name} card`}
                   style={{
@@ -109,12 +115,20 @@ function checkWin(
   selectedChampion,
   selectedCards,
   setSelectedCards,
-  setRestartGame
+  setRestartGame,
+  score,
+  setScore,
+  highScore,
+  setHighScore
 ) {
   console.log(selectedChampion);
+  console.log(selectedCards)
   if (selectedCards.has(selectedChampion)) {
     console.log("You lose");
     setRestartGame(true);
+    setScore(0);
+    const emptySet = new Set()
+    setSelectedCards(emptySet)
   } else {
     console.log("Win");
 
@@ -123,8 +137,11 @@ function checkWin(
       newSet.add(selectedChampion);
       return newSet;
     });
-
-    shuffleCards(championCards, setChampionCards)
+    
+    const newScore = score + 1;
+    setScore(newScore);
+    setHighScore(Math.max(newScore, highScore));
+    shuffleCards(championCards, setChampionCards);
   }
 }
 
@@ -160,7 +177,5 @@ function shuffleCards(championCards, setChampionCards) {
       arr[currentIndex],
     ];
   }
-  setChampionCards(
-    arr
-  )
+  setChampionCards(arr);
 }
