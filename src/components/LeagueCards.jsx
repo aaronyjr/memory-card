@@ -50,7 +50,15 @@ export function LeagueCards() {
           {championCards.map((card, index) => (
             <ReactParallaxTilt key={index}>
               <div
-                onClick={() => checkWin(card.name, selectedCards, setSelectedCards)}
+                onClick={() =>
+                  checkWin(
+                    championCards,
+                    setChampionCards,
+                    card.name,
+                    selectedCards,
+                    setSelectedCards
+                  )
+                }
                 className="card"
                 style={{
                   position: "relative",
@@ -92,20 +100,28 @@ export function LeagueCards() {
   );
 }
 
-function checkWin(selectedChampion, selectedCards, setSelectedCards) {
+function checkWin(
+  championCards,
+  setChampionCards,
+  selectedChampion,
+  selectedCards,
+  setSelectedCards
+) {
+  console.log(selectedChampion);
   if (selectedCards.has(selectedChampion)) {
-    console.log('You lose');
+    console.log("You lose");
   } else {
-    console.log('Win');
+    console.log("Win");
 
-    setSelectedCards(prevState => {
+    setSelectedCards((prevState) => {
       const newSet = new Set(prevState);
       newSet.add(selectedChampion);
       return newSet;
     });
+    
+    shuffleCards(championCards, setChampionCards)
   }
 }
-
 
 function generateTenChampionNames() {
   const listOfChampionNames = Object.values(leagueChampions.data).map(
@@ -123,4 +139,26 @@ function generateTenChampionNames() {
   );
 
   return championList;
+}
+
+// Fisher–Yates (aka Knuth) Shuffle Algorithm
+function shuffleCards(championCards, setChampionCards) {
+  let arr = championCards;
+  let currentIndex = arr.length;
+
+  // While there remain elements to shuffle...
+  while (currentIndex != 0) {
+    // Pick a remaining element...
+    let randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [arr[currentIndex], arr[randomIndex]] = [
+      arr[randomIndex],
+      arr[currentIndex],
+    ];
+  }
+  setChampionCards(
+    arr
+  )
 }
