@@ -7,10 +7,11 @@ import "../styles/CardStyle.css";
 const BASE_URL =
   "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/";
 
-export function LeagueCards({score, setScore, highScore, setHighScore}) {
+export function LeagueCards({ score, setScore, highScore, setHighScore }) {
   const [championCards, setChampionCards] = useState([]);
   const [selectedCards, setSelectedCards] = useState(new Set());
   const [restartGame, setRestartGame] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
 
   useEffect(() => {
     setRestartGame(false);
@@ -42,6 +43,14 @@ export function LeagueCards({score, setScore, highScore, setHighScore}) {
 
   return (
     <>
+      {isGameOver && (
+        <Popup
+          message={score === championCards.length ? "You Win!" : "You Lose!"}
+          setRestartGame={setRestartGame}
+          setIsGameOver={setIsGameOver}
+        />
+      )}
+
       {championCards.length > 0 ? (
         <div
           style={{
@@ -64,7 +73,8 @@ export function LeagueCards({score, setScore, highScore, setHighScore}) {
                     score,
                     setScore,
                     highScore,
-                    setHighScore
+                    setHighScore,
+                    setIsGameOver
                   )
                 }
                 className="card"
@@ -119,30 +129,53 @@ function checkWin(
   score,
   setScore,
   highScore,
-  setHighScore
+  setHighScore,
+  setIsGameOver
 ) {
   console.log(selectedChampion);
-  console.log(selectedCards)
   if (selectedCards.has(selectedChampion)) {
     console.log("You lose");
     setRestartGame(true);
     setScore(0);
-    const emptySet = new Set()
-    setSelectedCards(emptySet)
+    const emptySet = new Set();
+    setSelectedCards(emptySet);
+    setIsGameOver(true);
   } else {
     console.log("Win");
-
     setSelectedCards((prevState) => {
       const newSet = new Set(prevState);
       newSet.add(selectedChampion);
       return newSet;
     });
-    
+
     const newScore = score + 1;
     setScore(newScore);
     setHighScore(Math.max(newScore, highScore));
+
+    if (newScore === championCards.length) {
+      setIsGameOver(true);
+    }
+
     shuffleCards(championCards, setChampionCards);
+    console.log(newScore)
   }
+}
+
+export function Popup({ message, setRestartGame, setIsGameOver }) {
+  const handleRestart = () => {
+    setRestartGame(true);
+    setIsGameOver(false);
+  };
+
+  return (
+    <div className="popup-overlay">
+      <div className="popup">
+        <h2>Game Over</h2>
+        <p>{message}</p>
+        <button onClick={handleRestart}>Restart Game</button>
+      </div>
+    </div>
+  );
 }
 
 function generateTenChampionNames() {
