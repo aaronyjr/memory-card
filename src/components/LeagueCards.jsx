@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { leagueChampions } from "../data/Champions";
 import ReactParallaxTilt from "react-parallax-tilt";
 import "../styles/CardStyle.css";
+import ReactCardFlip from "react-card-flip";
 
 const BASE_URL =
   "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/";
@@ -12,6 +13,15 @@ export function LeagueCards({ score, setScore, highScore, setHighScore }) {
   const [selectedCards, setSelectedCards] = useState(new Set());
   const [restartGame, setRestartGame] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  const handleFlip = () => {
+    setIsFlipped(true);
+
+    setTimeout(() => {
+      setIsFlipped(false);
+    }, 1000);
+  };
 
   useEffect(() => {
     setRestartGame(false);
@@ -60,23 +70,60 @@ export function LeagueCards({ score, setScore, highScore, setHighScore }) {
           }}
         >
           {championCards.map((card, index) => (
-            <ReactParallaxTilt key={index}>
+            <ReactCardFlip key={index} isFlipped={isFlipped}>
+              <ReactParallaxTilt>
+                <div
+                  onClick={() => {
+                    checkWin(
+                      championCards,
+                      setChampionCards,
+                      card.name,
+                      selectedCards,
+                      setSelectedCards,
+                      setRestartGame,
+                      score,
+                      setScore,
+                      highScore,
+                      setHighScore,
+                      setIsGameOver
+                    );
+                    handleFlip();
+                  }}
+                  className="card"
+                  style={{
+                    position: "relative",
+                    textAlign: "center",
+                  }}
+                >
+                  <img
+                    className="card-image"
+                    src={card.imageUrl}
+                    alt={`${card.name} card`}
+                    style={{
+                      width: "80%",
+                      maxHeight: "380px",
+                    }}
+                  />
+
+                  <h3
+                    style={{
+                      position: "absolute",
+                      bottom: "10px",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      margin: "0",
+                      backgroundColor: "rgba(0, 0, 0, 0.5)",
+                      color: "white",
+                      padding: "5px",
+                      borderRadius: "8px",
+                    }}
+                  >
+                    {card.name}
+                  </h3>
+                </div>
+              </ReactParallaxTilt>
+
               <div
-                onClick={() =>
-                  checkWin(
-                    championCards,
-                    setChampionCards,
-                    card.name,
-                    selectedCards,
-                    setSelectedCards,
-                    setRestartGame,
-                    score,
-                    setScore,
-                    highScore,
-                    setHighScore,
-                    setIsGameOver
-                  )
-                }
                 className="card"
                 style={{
                   position: "relative",
@@ -86,30 +133,14 @@ export function LeagueCards({ score, setScore, highScore, setHighScore }) {
                 <img
                   className="card-image"
                   src={card.imageUrl}
-                  alt={`${card.name} card`}
+                  alt={`back of card`}
                   style={{
                     width: "80%",
                     maxHeight: "380px",
                   }}
                 />
-
-                <h3
-                  style={{
-                    position: "absolute",
-                    bottom: "10px",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    margin: "0",
-                    backgroundColor: "rgba(0, 0, 0, 0.5)",
-                    color: "white",
-                    padding: "5px",
-                    borderRadius: "8px",
-                  }}
-                >
-                  {card.name}
-                </h3>
               </div>
-            </ReactParallaxTilt>
+            </ReactCardFlip>
           ))}
         </div>
       ) : (
@@ -157,7 +188,7 @@ function checkWin(
     }
 
     shuffleCards(championCards, setChampionCards);
-    console.log(newScore)
+    console.log(newScore);
   }
 }
 
