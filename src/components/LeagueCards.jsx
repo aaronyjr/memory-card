@@ -4,6 +4,10 @@ import { leagueChampions } from "../data/Champions";
 import ReactParallaxTilt from "react-parallax-tilt";
 import "../styles/CardStyle.css";
 import ReactCardFlip from "react-card-flip";
+import wrongSound from "../assets/sound_effects/wrongSound.mp3";
+import correctSound from "../assets/sound_effects/correctSound.mp3";
+import cardFlipSound from "../assets/sound_effects/cardFlipSound.mp3";
+import cardBack from "../assets/images/card-back.jpg"
 
 const BASE_URL =
   "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/";
@@ -132,10 +136,10 @@ export function LeagueCards({ score, setScore, highScore, setHighScore }) {
               >
                 <img
                   className="card-image"
-                  src={card.imageUrl}
+                  src={cardBack}
                   alt={`back of card`}
                   style={{
-                    width: "80%",
+                    width: '90%',
                     maxHeight: "380px",
                   }}
                 />
@@ -166,6 +170,8 @@ function checkWin(
   console.log(selectedChampion);
   if (selectedCards.has(selectedChampion)) {
     console.log("You lose");
+    playSound(wrongSound);
+    playSound(cardFlipSound);
     setRestartGame(true);
     setScore(0);
     const emptySet = new Set();
@@ -173,6 +179,8 @@ function checkWin(
     setIsGameOver(true);
   } else {
     console.log("Win");
+    playSound(correctSound);
+    playSound(cardFlipSound);
     setSelectedCards((prevState) => {
       const newSet = new Set(prevState);
       newSet.add(selectedChampion);
@@ -242,4 +250,8 @@ function shuffleCards(championCards, setChampionCards) {
     ];
   }
   setChampionCards(arr);
+}
+
+function playSound(sound) {
+  new Audio(sound).play();
 }

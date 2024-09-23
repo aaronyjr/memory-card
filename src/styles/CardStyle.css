@@ -1,8 +1,12 @@
 .card {
-    padding: 0px;
+    width: 200px;
+    height: 300px;
+    padding: 0;
 }
 
 .card-image {
+    width: 100%;
+    height: 100%;
     box-sizing: border-box;
     border: 4px solid transparent;
 }
@@ -11,6 +15,7 @@
     border-color: #ADD8E6;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 
 .popup-overlay {
     position: fixed;
