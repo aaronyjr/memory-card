@@ -8,6 +8,8 @@ import wrongSound from "../assets/sound_effects/wrongSound.mp3";
 import correctSound from "../assets/sound_effects/correctSound.mp3";
 import cardFlipSound from "../assets/sound_effects/cardFlipSound.mp3";
 import cardBack from "../assets/images/card-back.jpg"
+import beeSad from "../assets/images/bee-sad.png"
+import happyPoro from "../assets/images/happy-poro.webp"
 
 const BASE_URL =
   "https://ddragon.leagueoflegends.com/cdn/img/champion/loading/";
@@ -29,6 +31,7 @@ export function LeagueCards({ score, setScore, highScore, setHighScore }) {
 
   useEffect(() => {
     setRestartGame(false);
+    setScore(0)
     const listOfChampionNames = generateTenChampionNames();
     console.log(listOfChampionNames);
 
@@ -62,6 +65,7 @@ export function LeagueCards({ score, setScore, highScore, setHighScore }) {
           message={score === championCards.length ? "You Win!" : "You Lose!"}
           setRestartGame={setRestartGame}
           setIsGameOver={setIsGameOver}
+          imageUrl={score <= 7 ? beeSad : happyPoro}
         />
       )}
 
@@ -173,7 +177,6 @@ function checkWin(
     playSound(wrongSound);
     playSound(cardFlipSound);
     setRestartGame(true);
-    setScore(0);
     const emptySet = new Set();
     setSelectedCards(emptySet);
     setIsGameOver(true);
@@ -193,6 +196,8 @@ function checkWin(
 
     if (newScore === championCards.length) {
       setIsGameOver(true);
+      const emptySet = new Set()
+      setSelectedCards(emptySet);
     }
 
     shuffleCards(championCards, setChampionCards);
@@ -200,7 +205,7 @@ function checkWin(
   }
 }
 
-export function Popup({ message, setRestartGame, setIsGameOver }) {
+export function Popup({ message, setRestartGame, setIsGameOver, imageUrl }) {
   const handleRestart = () => {
     setRestartGame(true);
     setIsGameOver(false);
@@ -210,6 +215,7 @@ export function Popup({ message, setRestartGame, setIsGameOver }) {
     <div className="popup-overlay">
       <div className="popup">
         <h2>Game Over</h2>
+        <img src={imageUrl} alt="Game over" />
         <p>{message}</p>
         <button onClick={handleRestart}>Restart Game</button>
       </div>
@@ -237,20 +243,25 @@ function generateTenChampionNames() {
 
 // Fisher–Yates (aka Knuth) Shuffle Algorithm
 function shuffleCards(championCards, setChampionCards) {
-  let arr = championCards;
+  let arr = [...championCards];
   let currentIndex = arr.length;
 
-  while (currentIndex != 0) {
-    let randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
+  const shuffle = () => {
+    while (currentIndex != 0) {
+      let randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
 
-    [arr[currentIndex], arr[randomIndex]] = [
-      arr[randomIndex],
-      arr[currentIndex],
-    ];
-  }
-  setChampionCards(arr);
+      [arr[currentIndex], arr[randomIndex]] = [
+        arr[randomIndex],
+        arr[currentIndex],
+      ];
+    }
+    setChampionCards(arr);
+  };
+
+  setTimeout(shuffle, 200);
 }
+
 
 function playSound(sound) {
   new Audio(sound).play();

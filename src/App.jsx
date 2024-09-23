@@ -1,25 +1,26 @@
 import { useState } from "react";
 import "./App.css";
 import { LeagueCards } from "./components/LeagueCards";
+import "./styles/HomePageStyle.css"
 
 function App() {
   const [score, setScore] = useState(0);
   const [highScore, setHighScore] = useState(0);
 
   if (score > highScore) {
-    setHighScore(highScore + 1);
+    setHighScore(score);
   }
 
   return (
-    <div>
+    <div className="container">
       <h1>Memory Game</h1>
       <p>
-        Get points by clicking on an image, but don't click on an image more
+        Get points by clicking on an image, but don&apos;t click on an image more
         than once!
       </p>
-      <div>
-        <p>Score: {score}</p>
-        <p>High score: {highScore}</p>
+      <div className="score-container">
+        <div className="score">Score: {score}</div>
+        <div className="score">High Score: {highScore}</div>
       </div>
       <LeagueCards
         score={score}
