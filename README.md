@@ -1,9 +1,7 @@
-# YOUR PROJECT TITLE
-#### Video Demo:  <https://youtu.be/L3dTw9Bl9Wk>
-#### Description:
-
 # Memory Card Game
-Overview
+#### Video Demo:  <https://youtu.be/L3dTw9Bl9Wk>
+# Description:
+# Overview
 The Memory Card Game is an interactive browser-based game built with React. The objective of the game is to click on unique cards without selecting the same card twice. As the game progresses, the cards shuffle, increasing the challenge of remembering which ones you’ve already selected. This project was developed as part of a learning module to enhance proficiency in React state management, component-based architecture, and modern styling techniques.
 
 This README serves to document the structure, design choices, and functionality of the project. It outlines each file's role, the technologies used, and the reasoning behind key decisions.
